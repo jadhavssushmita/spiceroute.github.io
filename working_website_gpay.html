@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpiceRoute | Premium Masalas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-orange-50 text-gray-800 antialiased">
+
+<div id="login-modal" class="fixed inset-0 bg-orange-900 bg-opacity-95 z-[100] flex items-center justify-center p-4">
+    <div class="bg-white p-8 rounded-xl max-w-sm w-full shadow-2xl border-t-8 border-orange-600 text-center">
+        <h2 class="text-2xl font-bold mb-2 text-orange-900 uppercase tracking-widest">SpiceRoute</h2>
+        <p class="text-sm mb-6 text-gray-500">Enter your mobile number to continue.</p>
+        <input id="login-phone-input" type="tel" placeholder="Mobile Number" class="w-full mb-4 p-3 border rounded-lg outline-none text-center text-lg focus:ring-2 focus:ring-orange-500">
+        <button onclick="handleLogin()" class="w-full bg-orange-600 text-white py-3 rounded-lg font-bold hover:bg-orange-700 transition">
+            Enter Store
+        </button>
+    </div>
+</div>
+
+<nav class="bg-orange-800 text-white p-4 sticky top-0 z-50 shadow-lg">
+    <div class="container mx-auto flex justify-between items-center">
+        <h1 class="text-2xl font-bold tracking-widest uppercase cursor-pointer" onclick="hideAdmin()">SpiceRoute</h1>
+        <div class="space-x-4 flex items-center">
+            <button onclick="showAdmin()" class="text-xs font-bold uppercase hover:text-orange-200">My Orders</button>
+            <button onclick="toggleCart()" class="bg-orange-600 px-4 py-2 rounded-full hover:bg-orange-700 transition shadow-md">
+                Cart (<span id="cart-count">0</span>)
+            </button>
+        </div>
+    </div>
+</nav>
+
+<header id="hero-section" class="py-16 text-center bg-orange-100 border-b border-orange-200">
+    <h2 class="text-4xl font-serif font-bold text-orange-900">Authentic Masalas, Delivered.</h2>
+    <p class="mt-4 text-orange-700">Freshly ground spices for the perfect taste.</p>
+</header>
+
+<main id="admin-area" class="hidden container mx-auto px-4 py-12 max-w-4xl">
+    <div class="flex justify-between items-center mb-8">
+        <h2 class="text-3xl font-bold text-orange-900">Your Order History</h2>
+        <button onclick="hideAdmin()" class="text-orange-700 font-bold underline">Back to Shop</button>
+    </div>
+    <div id="order-history-list" class="space-y-6"></div>
+</main>
+
+<main id="shop-area" class="container mx-auto px-4 py-12">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        <div class="bg-white p-6 rounded-lg shadow-md border-b-4 border-orange-500 hover:shadow-xl transition">
+            <div class="h-48 bg-orange-50 rounded mb-4 flex items-center justify-center text-5xl">🔥</div>
+            <h3 class="text-xl font-bold text-orange-950">Garam Masala (100 gm)</h3>
+            <p class="text-gray-600 mt-2 text-sm">A rich blend of premium spices for classic aroma.</p>
+            <div class="mt-4 flex justify-between items-center">
+                <span class="text-2xl font-bold text-orange-800">₹100</span>
+                <button onclick="addToCart('Garam Masala (100gm)', 100)" class="bg-orange-800 text-white px-6 py-2 rounded-lg font-bold hover:bg-orange-900">Add to Cart</button>
+            </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg shadow-md border-b-4 border-orange-500 hover:shadow-xl transition">
+            <div class="h-48 bg-orange-50 rounded mb-4 flex items-center justify-center text-5xl">✨</div>
+            <h3 class="text-xl font-bold text-orange-950">Special Masala (100 gm)</h3>
+            <p class="text-gray-600 mt-2 text-sm">Our secret family recipe for enhanced flavor.</p>
+            <div class="mt-4 flex justify-between items-center">
+                <span class="text-2xl font-bold text-orange-800">₹80</span>
+                <button onclick="addToCart('Special Masala (100gm)', 80)" class="bg-orange-800 text-white px-6 py-2 rounded-lg font-bold hover:bg-orange-900">Add to Cart</button>
+            </div>
+        </div>
+    </div>
+</main>
+
+<div id="checkout-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center p-4 z-[110]">
+    <div class="bg-white p-8 rounded-xl max-w-md w-full shadow-2xl">
+        <h2 class="text-2xl font-bold mb-4 text-orange-900">Checkout</h2>
+        <div id="cart-items" class="mb-4 text-sm border-b pb-4 space-y-2"></div>
+        <form onsubmit="initiatePayment(event)">
+            <input name="Customer_Phone" id="form-phone" readonly class="w-full mb-3 p-2 bg-gray-100 border rounded font-mono text-gray-500">
+            <input required name="Full_Name" placeholder="Recipient Name" class="w-full mb-3 p-2 border rounded outline-none">
+            <input name="Address" id="address-input" required placeholder="Shipping Address" class="w-full mb-4 p-2 border rounded outline-none focus:ring-2 focus:ring-orange-500">
+            <button type="submit" class="w-full bg-green-700 text-white py-4 rounded-lg font-bold text-lg hover:bg-green-800 shadow-lg">Pay ₹<span id="btn-total">0</span> via GPay</button>
+            <button type="button" onclick="toggleCart()" class="w-full mt-3 text-gray-400 text-sm font-bold">Cancel</button>
+        </form>
+    </div>
+</div>
+
+<div id="confirmation-page" class="hidden min-h-screen flex items-center justify-center bg-green-50 p-6">
+    <div class="bg-white p-8 rounded-2xl shadow-xl max-w-md w-full text-center border-t-8 border-green-600">
+        <h2 class="text-3xl font-bold text-green-700 mb-4">🎉 Order Recorded!</h2>
+        <p class="text-gray-600 mb-6 text-sm">The GPay app should have opened. If not, please complete the transfer in your app.</p>
+        <div class="border rounded-xl p-5 text-left text-sm mb-6 bg-gray-50 border-gray-200">
+            <p><strong>Order ID:</strong> <span id="conf-order"></span></p>
+            <p><strong>Total Amount:</strong> ₹<span id="conf-total"></span></p>
+            <p><strong>Status:</strong> Awaiting Verification</p>
+        </div>
+        <button onclick="location.reload()" class="w-full bg-orange-700 text-white px-6 py-3 rounded-xl font-bold">Back to Store</button>
+    </div>
+</div>
+
+<script>
+let cart = [];
+let userPhone = "";
+
+const BUSINESS_CONTACT = "919029523782"; 
+
+function handleLogin() {
+    const p = document.getElementById('login-phone-input').value;
+    if(p.length > 5) {
+        userPhone = p;
+        localStorage.setItem('spicePhone', p);
+        document.getElementById('login-modal').classList.add('hidden');
+        document.getElementById('form-phone').value = p;
+    }
+}
+
+function addToCart(name, price) {
+    cart.push({ name, price });
+    document.getElementById('cart-count').innerText = cart.length;
+    alert(name + " added to cart!");
+}
+
+function toggleCart() {
+    if (cart.length === 0) { alert("Cart is empty!"); return; }
+    const itemsDiv = document.getElementById('cart-items');
+    let total = cart.reduce((s, i) => s + i.price, 0);
+    
+    itemsDiv.innerHTML = cart.map(i => `<div class="flex justify-between"><span>${i.name}</span><b>₹${i.price}</b></div>`).join('');
+    itemsDiv.innerHTML += `<div class="flex justify-between font-bold text-lg pt-2 border-t mt-2"><span>Total</span><span>₹${total}</span></div>`;
+    
+    document.getElementById('btn-total').innerText = total;
+    document.getElementById('checkout-modal').classList.toggle('hidden');
+}
+
+function initiatePayment(e) {
+    e.preventDefault();
+    const total = cart.reduce((s, i) => s + i.price, 0);
+    const orderID = 'SR-' + Date.now().toString().slice(-5);
+    
+    const myGpayId = "sharayuj66@oksbi"; 
+    const upiUrl = `upi://pay?pa=${myGpayId}&pn=SpiceRoute&am=${total}&cu=INR&tn=Order-${orderID}`;
+
+    const orderData = {
+        id: orderID,
+        total: "₹" + total,
+        items: cart.map(i => i.name).join(", "),
+        date: new Date().toLocaleDateString(),
+        status: "Payment Pending",
+        tracking: "Updating after verification..."
+    };
+
+    let history = JSON.parse(localStorage.getItem('orders_' + userPhone)) || [];
+    history.push(orderData);
+    localStorage.setItem('orders_' + userPhone, JSON.stringify(history));
+
+    // Opens GPay on Mobile
+    window.location.href = upiUrl;
+
+    setTimeout(() => {
+        document.getElementById('checkout-modal').classList.add('hidden');
+        document.querySelector('nav').style.display = 'none';
+        document.getElementById('hero-section').style.display = 'none';
+        document.getElementById('shop-area').style.display = 'none';
+        document.getElementById('confirmation-page').classList.remove('hidden');
+        document.getElementById('conf-order').innerText = orderID;
+        document.getElementById('conf-total').innerText = total;
+    }, 1500);
+}
+
+function showAdmin() {
+    document.getElementById('shop-area').classList.add('hidden');
+    document.getElementById('hero-section').classList.add('hidden');
+    document.getElementById('admin-area').classList.remove('hidden');
+    
+    const list = document.getElementById('order-history-list');
+    const orders = JSON.parse(localStorage.getItem('orders_' + userPhone)) || [];
+    
+    list.innerHTML = orders.length ? orders.reverse().map(o => `
+        <div class="bg-white p-6 border-l-8 border-orange-600 rounded-xl shadow-md mb-4">
+            <div class="flex justify-between items-start mb-4">
+                <div>
+                    <h3 class="text-xl font-bold text-orange-900">${o.id}</h3>
+                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">${o.date}</p>
+                </div>
+                <div class="text-right">
+                    <span class="px-3 py-1 rounded-full text-[10px] font-bold uppercase bg-orange-100 text-orange-700">${o.status}</span>
+                    <div class="text-2xl font-black text-orange-800 mt-1">${o.total}</div>
+                </div>
+            </div>
+            <div class="space-y-4 border-t pt-4">
+                <p class="text-sm text-gray-700 font-medium">Items: ${o.items}</p>
+                <div class="bg-stone-50 p-4 rounded-lg border border-stone-100">
+                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Live Tracking</p>
+                    <p class="text-sm text-orange-700 font-bold">${o.tracking}</p>
+                </div>
+            </div>
+            <div class="mt-6 flex gap-3">
+                <a href="tel:+${BUSINESS_CONTACT}" class="flex-1 bg-orange-800 text-white text-center py-3 rounded-lg text-[10px] font-bold uppercase tracking-widest">📞 Call</a>
+                <a href="https://wa.me/${BUSINESS_CONTACT}?text=Query Order ${o.id}" class="flex-1 border-2 border-orange-800 text-orange-800 text-center py-3 rounded-lg text-[10px] font-bold uppercase tracking-widest">💬 WhatsApp</a>
+            </div>
+        </div>`).join('') : '<p class="text-center text-gray-400 italic py-20">No orders found.</p>';
+}
+
+function hideAdmin() {
+    document.getElementById('admin-area').classList.add('hidden');
+    document.getElementById('shop-area').classList.remove('hidden');
+    document.getElementById('hero-section').classList.remove('hidden');
+}
+
+window.onload = () => {
+    const saved = localStorage.getItem('spicePhone');
+    if(saved) {
+        userPhone = saved;
+        document.getElementById('login-modal').classList.add('hidden');
+        document.getElementById('form-phone').value = saved;
+    }
+};
+</script>
+</body>
+</html>
