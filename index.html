@@ -66,7 +66,11 @@
         <form onsubmit="initiatePayment(event)" class="space-y-4">
             <input required id="cust-name" placeholder="Full Name" class="w-full p-4 bg-stone-50 border border-stone-100 rounded-2xl outline-none">
             <input required id="cust-addr" placeholder="Shipping Address" class="w-full p-4 bg-stone-50 border border-stone-100 rounded-2xl outline-none">
-            <button type="submit" class="w-full bg-green-600 text-white py-5 rounded-2xl font-bold text-lg shadow-lg">PAY VIA GOOGLE PAY</button>
+            
+            <button type="submit" class="w-full bg-green-600 text-white py-5 rounded-2xl font-bold text-lg shadow-lg uppercase tracking-tight">
+                Pay via GPay
+            </button>
+            
             <button type="button" onclick="toggleCart()" class="w-full text-stone-400 text-xs font-bold uppercase tracking-widest py-2">Go Back</button>
         </form>
     </div>
@@ -158,6 +162,7 @@ function initiatePayment(e) {
     const total = cart.reduce((s, i) => s + i.price, 0);
     const orderID = 'SR-' + Math.floor(1000 + Math.random() * 9000);
 
+    // KEY FIX: Using 'tez://' to force Google Pay and adding Merchant Parameters
     const upiParams = `pa=${MY_GPAY_ID}&pn=SpiceRoute&am=${total}&cu=INR&tn=Order-${orderID}&mc=0000&mode=02`;
     
     const orderData = {
@@ -174,9 +179,14 @@ function initiatePayment(e) {
     history.push(orderData);
     localStorage.setItem('orders_' + fullUserPhone, JSON.stringify(history));
 
-    window.location.href = `upi://pay?${upiParams}`;
+    // Forcing GPay with tez:// protocol
+    window.location.href = `tez://upi/pay?${upiParams}`;
 
+    // Fallback logic: if GPay isn't installed, it tries generic UPI after 1 second
     setTimeout(() => {
+        if (document.hasFocus()) {
+            window.location.href = `upi://pay?${upiParams}`;
+        }
         document.getElementById('checkout-modal').classList.add('hidden');
         cart = [];
         document.getElementById('cart-count').innerText = "0";
