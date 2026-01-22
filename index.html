@@ -3,167 +3,136 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Slow-Ground | Artisan Heirloom Spices</title>
+    <title>Slow-Ground | Stone-Pounded Spices</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fafaf9; }
+        :root { --laterite: #b04a33; --basalt: #1c1c1c; --clay: #f4f1ee; }
+        body { font-family: 'Space Grotesk', sans-serif; background-color: var(--clay); color: var(--basalt); }
         .serif { font-family: 'Playfair Display', serif; }
-        .glass { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px); }
+        .glass { background: rgba(244, 241, 238, 0.98); backdrop-filter: blur(20px); }
         .no-scrollbar::-webkit-scrollbar { display: none; }
-        .product-img-container { aspect-ratio: 1/1; max-height: 400px; overflow: hidden; border-radius: 24px; }
+        .product-card { border: 1px solid transparent; transition: all 0.4s ease; }
+        .product-card:hover { border-color: var(--basalt); background: white; }
+        input, textarea { border-radius: 0 !important; border-bottom: 1px solid #000 !important; border-top: none !important; border-left: none !important; border-right: none !important; background: transparent !important; }
+        input:focus { border-color: var(--laterite) !important; outline: none; }
     </style>
 </head>
-<body class="text-stone-950">
+<body class="antialiased">
 
-<div id="login-modal" class="fixed inset-0 bg-white z-[100] flex flex-col items-center justify-center p-6 text-center">
-    <div class="max-w-sm w-full space-y-8">
-        <div class="space-y-2">
-            <span class="text-[10px] font-bold tracking-[0.4em] text-orange-600 uppercase">Handcrafted</span>
-            <h2 class="text-5xl serif">Slow-Ground</h2>
-            <p class="text-stone-400 font-light text-sm">Traditional stone-pounded heirloom spices.</p>
-        </div>
-        <div class="space-y-4">
-            <div class="flex gap-2 border-b border-stone-200 py-3">
-                <input id="login-area-code" type="text" value="+91" class="w-16 bg-transparent text-center font-bold outline-none">
-                <input id="login-phone-input" type="tel" placeholder="Mobile Number" class="flex-1 bg-transparent outline-none font-bold">
-            </div>
-            <button id="login-btn" onclick="handleLogin()" class="w-full bg-stone-950 text-white py-5 rounded-full font-bold text-xs uppercase tracking-widest hover:bg-orange-600 transition-all shadow-xl shadow-stone-200">
-                Enter Kitchen
-            </button>
+<div id="login-modal" class="fixed inset-0 bg-[#f4f1ee] z-[200] flex flex-col items-center justify-center p-6">
+    <div class="max-w-xs w-full space-y-12 text-center">
+        <h2 class="text-5xl serif italic tracking-tighter">Slow-Ground</h2>
+        <div class="space-y-6">
+            <input id="login-phone-input" type="tel" placeholder="Enter Mobile Number" class="w-full font-bold text-center text-lg pb-4">
+            <button onclick="handleLogin()" class="w-full bg-stone-900 text-white py-5 font-bold text-[10px] uppercase tracking-[0.4em]">Login</button>
         </div>
     </div>
 </div>
 
-<nav class="glass sticky top-0 z-50 border-b border-stone-100 px-6 py-4">
-    <div class="max-w-6xl mx-auto flex justify-between items-center">
-        <h1 class="text-xl font-extrabold tracking-tighter uppercase serif cursor-pointer" onclick="location.reload()">Slow-Ground</h1>
-        <div class="flex items-center gap-6">
-            <button onclick="toggleHistory()" class="text-[10px] font-bold tracking-widest uppercase text-stone-400 hover:text-stone-950">My Orders</button>
-            <button onclick="toggleCart()" class="bg-stone-950 text-white px-5 py-2.5 rounded-full flex items-center gap-3">
-                <span class="text-[10px] font-bold tracking-widest uppercase">Cart</span>
-                <span id="cart-count" class="bg-orange-600 text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center font-bold">0</span>
-            </button>
+<nav class="glass sticky top-0 z-50 border-b border-stone-200 px-8 py-6">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+        <div class="cursor-pointer" onclick="location.reload()"><h1 class="text-xl font-bold tracking-tighter uppercase">Slow-Ground</h1></div>
+        <div class="flex items-center gap-12">
+            <button onclick="toggleHistory()" class="text-[10px] font-bold tracking-widest uppercase border-b border-stone-900 pb-1">My Orders</button>
+            <div class="flex flex-col items-end border-l border-stone-300 pl-8">
+                <span class="text-[8px] font-bold text-stone-400 uppercase tracking-widest leading-none">Logged In</span>
+                <span id="user-display-id" class="text-[10px] font-bold text-stone-900 tracking-widest">+91 0000000000</span>
+            </div>
+            <button onclick="toggleCart()" class="text-[10px] font-bold tracking-widest uppercase bg-stone-900 text-white px-4 py-2">Cart (<span id="cart-count">0</span>)</button>
         </div>
     </div>
 </nav>
 
-<main class="max-w-6xl mx-auto px-6 py-16">
-    <header class="mb-16">
-        <h2 class="text-4xl md:text-5xl serif italic leading-tight">Small batches. <br><span class="text-orange-600">Pure stone-pounded.</span></h2>
+<main class="max-w-7xl mx-auto px-8 py-24">
+    <header class="mb-32">
+        <h2 class="text-7xl md:text-8xl serif italic leading-[0.9] tracking-tighter">Pounded <span class="text-[#b04a33]">Slow.</span><br>Earthy Soul.</h2>
     </header>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-16">
-        <div class="group cursor-pointer" onclick="addToCart('Everyday Magic', 1050)">
-            <div class="product-img-container bg-stone-100 mb-6">
-                <img src="everyday-magic.jpg" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" onerror="this.src='https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=600'">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-16">
+        <div class="product-card p-6 group cursor-pointer" onclick="addToCart('Everyday Magic', 1050)">
+            <div class="aspect-[4/5] bg-stone-200 mb-8 overflow-hidden">
+                <img src="everyday-magic.jpg" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
             </div>
-            <div class="flex justify-between items-start px-2">
-                <div><h3 class="text-xl font-bold">Everyday Magic</h3><p class="text-stone-400 text-sm italic">Red Chillies • 750gm</p></div>
-                <div class="text-right"><p class="text-xl font-bold">₹1050</p><span class="text-[10px] text-orange-600 font-bold uppercase underline">Add</span></div>
+            <div class="flex justify-between items-baseline mb-4">
+                <h3 class="text-3xl font-bold uppercase tracking-tighter">Everyday Magic</h3>
+                <span class="text-2xl">1050</span>
             </div>
+            <p class="text-[10px] font-bold uppercase tracking-widest text-[#b04a33] mb-8">Teja Chilli • 750g</p>
+            <button class="w-full py-5 border border-stone-900 text-[10px] font-bold uppercase tracking-[0.4em]">Add to Cart</button>
         </div>
-        <div class="group cursor-pointer" onclick="addToCart('Garam Masala', 950)">
-            <div class="product-img-container bg-stone-100 mb-6">
-                <img src="garam-masala.jpg" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" onerror="this.src='https://images.unsplash.com/photo-1532336414038-cf19250c5757?w=600'">
+
+        <div class="product-card p-6 group cursor-pointer" onclick="addToCart('Garam Masala', 950)">
+            <div class="aspect-[4/5] bg-stone-200 mb-8 overflow-hidden">
+                <img src="garam-masala.jpg" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
             </div>
-            <div class="flex justify-between items-start px-2">
-                <div><h3 class="text-xl font-bold">Garam Masala</h3><p class="text-stone-400 text-sm italic">Heirloom Blend • 750gm</p></div>
-                <div class="text-right"><p class="text-xl font-bold">₹950</p><span class="text-[10px] text-orange-600 font-bold uppercase underline">Add</span></div>
+            <div class="flex justify-between items-baseline mb-4">
+                <h3 class="text-3xl font-bold uppercase tracking-tighter">Garam Masala</h3>
+                <span class="text-2xl">950</span>
             </div>
+            <p class="text-[10px] font-bold uppercase tracking-widest text-[#b04a33] mb-8">Heirloom Blend • 750g</p>
+            <button class="w-full py-5 border border-stone-900 text-[10px] font-bold uppercase tracking-[0.4em]">Add to Cart</button>
         </div>
     </div>
 </main>
 
-<footer class="bg-stone-900 text-stone-100 py-20 px-6 rounded-t-[3rem]">
-    <div class="max-w-6xl mx-auto">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-16 mb-20">
-            <div class="space-y-6">
-                <h4 class="text-orange-500 font-bold text-xs uppercase tracking-[0.3em]">Our Promise</h4>
-                <p class="text-stone-400 text-sm leading-relaxed">
-                    We keep the heat low. Industrial grinders destroy spice oils; our stone-pounding keeps every aroma and health benefit locked inside.
-                </p>
-                <div class="flex flex-wrap gap-2">
-                    <span class="bg-stone-800 px-3 py-1 rounded-full text-[10px] font-bold border border-stone-700">NO ADDITIVES</span>
-                    <span class="bg-stone-800 px-3 py-1 rounded-full text-[10px] font-bold border border-stone-700">100% PURE</span>
-                </div>
+<footer class="bg-[#1c1c1c] text-white pt-24 pb-12 px-8 mt-20">
+    <div class="max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-16 mb-24">
+            <div class="space-y-8">
+                <h3 class="text-3xl serif italic tracking-tighter">Slow-Ground</h3>
+                <p class="text-stone-400 text-sm max-w-sm">Stone-pounded purity from our home to yours.</p>
             </div>
-            <div class="space-y-6">
-                <h4 class="text-orange-500 font-bold text-xs uppercase tracking-[0.3em]">Kitchen Help</h4>
-                <div class="space-y-4">
-                    <a href="tel:+919892259949" class="flex items-center gap-4 group">
-                        <div class="w-10 h-10 bg-stone-800 rounded-full flex items-center justify-center group-hover:bg-orange-600 transition-colors italic serif">p</div>
-                        <div><p class="text-[10px] text-stone-500 font-bold uppercase">Phone</p><p class="font-bold">+91 9892259949</p></div>
-                    </a>
-                    <a href="https://wa.me/919892259949" class="flex items-center gap-4 group">
-                        <div class="w-10 h-10 bg-stone-800 rounded-full flex items-center justify-center group-hover:bg-green-600 transition-colors italic serif">w</div>
-                        <div><p class="text-[10px] text-stone-500 font-bold uppercase">WhatsApp</p><p class="font-bold">Chat with Admin</p></div>
-                    </a>
-                </div>
-            </div>
-            <div class="space-y-6">
-                <h4 class="text-orange-500 font-bold text-xs uppercase tracking-[0.3em]">Authenticity</h4>
-                <p class="text-stone-400 text-sm leading-relaxed italic">
-                    Fresh batches stone-pounded daily.<br>
-                    Location: Mumbai, Maharashtra.<br>
-                    Shipping: Pan-India.
-                </p>
+            <div class="flex flex-col md:items-end justify-center space-y-6 text-right">
+                <h4 class="text-[10px] font-bold uppercase tracking-[0.3em] text-[#b04a33]">Direct Line</h4>
+                <a href="tel:+919892259949" class="text-xl serif italic block">+91 9892259949</a>
+                <p class="text-stone-500 text-[10px] font-bold uppercase">Founder: Aai • Mumbai</p>
             </div>
         </div>
-        <div class="text-[9px] font-bold text-stone-600 uppercase tracking-[0.4em] text-center border-t border-stone-800 pt-10">
-            Slow-Ground Heirloom Spices © 2026
+        <div class="pt-12 border-t border-stone-800 flex justify-between">
+            <p class="text-[9px] font-bold text-stone-600 uppercase tracking-[0.4em]">© 2026 Slow-Ground</p>
+            <p class="text-[9px] font-bold text-stone-600 uppercase tracking-[0.4em]">Purity Guaranteed</p>
         </div>
     </div>
 </footer>
 
-<div id="checkout-modal" class="fixed inset-0 bg-stone-950/20 backdrop-blur-md hidden z-[110] flex justify-end">
-    <div class="bg-white w-full max-w-md h-full p-10 shadow-2xl flex flex-col">
+<div id="checkout-modal" class="fixed inset-0 bg-black/40 backdrop-blur-sm hidden z-[140] flex justify-end">
+    <div class="bg-white w-full max-w-md h-full p-10 flex flex-col shadow-2xl">
         <div class="flex justify-between items-center mb-8">
-            <h2 class="text-3xl serif italic">Review Order</h2>
-            <button onclick="toggleCart()" class="text-3xl font-light">&times;</button>
+            <h2 class="text-3xl font-bold uppercase tracking-tighter">Cart</h2>
+            <button onclick="toggleCart()" class="text-3xl">&times;</button>
         </div>
-
-        <div class="mb-6 p-4 bg-stone-50 rounded-2xl flex justify-between items-center border border-stone-100">
-            <div>
-                <p class="text-[10px] font-bold text-stone-400 uppercase tracking-widest">Phone Number</p>
-                <p id="checkout-phone" class="font-bold text-stone-900"></p>
-            </div>
-            <button onclick="editPhone()" class="text-[10px] font-bold text-orange-600 uppercase underline decoration-2 underline-offset-4">Edit</button>
-        </div>
-
-        <div id="cart-items" class="flex-1 space-y-6 overflow-y-auto no-scrollbar pb-6"></div>
-        
-        <div class="border-t pt-6 space-y-6 mt-auto">
+        <div id="cart-items" class="flex-1 space-y-4 overflow-y-auto no-scrollbar"></div>
+        <div class="border-t pt-8 mt-8 space-y-6">
             <div id="cart-total-display"></div>
-            <form onsubmit="event.preventDefault(); showPaymentQR();" class="space-y-4">
-                <input required id="cust-name" placeholder="Full Name" class="w-full p-4 bg-stone-50 rounded-xl outline-none focus:ring-1 ring-orange-500 font-bold">
-                <textarea required id="cust-addr" placeholder="Shipping Address" class="w-full p-4 bg-stone-50 rounded-xl outline-none focus:ring-1 ring-orange-500 font-bold h-20"></textarea>
-                <button type="submit" class="w-full bg-stone-950 text-white py-5 rounded-full font-bold uppercase tracking-widest text-[10px] shadow-lg">Confirm & Pay</button>
+            <form onsubmit="event.preventDefault(); startPaymentFlow();" class="space-y-4">
+                <input required id="cust-name" placeholder="FULL NAME" class="w-full py-3 text-xs font-bold uppercase tracking-widest">
+                <textarea required id="cust-addr" placeholder="SHIPPING ADDRESS" class="w-full py-3 text-xs uppercase tracking-widest h-24"></textarea>
+                <button type="submit" id="proceed-btn" class="w-full bg-stone-900 text-white py-5 font-bold uppercase tracking-[0.4em] text-[10px]">Proceed to Pay</button>
             </form>
         </div>
     </div>
 </div>
 
-<div id="qr-modal" class="fixed inset-0 bg-white z-[200] hidden flex flex-col items-center justify-center p-6 text-center">
-    <div id="qr-step-1" class="max-w-xs w-full">
-        <h3 class="text-2xl serif mb-4 italic">Scan to Pay</h3>
-        <div id="qr-display" class="mb-8 p-4 border border-stone-100 rounded-2xl inline-block"></div>
-        <button onclick="showTransactionInput()" class="w-full bg-stone-900 text-white py-4 rounded-full font-bold text-[10px] uppercase tracking-widest">I Have Paid</button>
+<div id="qr-modal" class="fixed inset-0 bg-white z-[300] hidden flex flex-col items-center justify-center p-8 text-center">
+    <div id="qr-step-1" class="space-y-8">
+        <div class="px-4 py-2 bg-stone-100 inline-block text-[10px] font-bold tracking-widest uppercase tracking-tighter">Order: <span id="display-order-id"></span></div>
+        <div id="qr-display" class="p-4 border border-stone-100 inline-block"></div>
+        <button onclick="showTransactionInput()" class="block w-full bg-stone-900 text-white py-5 px-12 font-bold text-[10px] uppercase tracking-[0.4em]">Transfer Complete</button>
     </div>
-    <div id="qr-step-2" class="hidden max-w-xs w-full space-y-6">
-        <h3 class="text-2xl serif italic">Enter UTR</h3>
-        <p class="text-[10px] text-stone-400 font-bold uppercase tracking-widest">12-Digit Transaction ID</p>
-        <input id="utr-input" type="number" placeholder="Enter UTR Number" class="w-full p-4 text-center text-xl font-bold border-b-2 border-orange-500 outline-none">
-        <button id="final-btn" onclick="validateAndSubmitOrder()" class="w-full bg-orange-600 text-white py-4 rounded-full font-bold uppercase tracking-widest text-[10px]">Complete Order</button>
+    <div id="qr-step-2" class="hidden space-y-8 w-full max-w-xs">
+        <p class="text-[10px] font-bold uppercase tracking-widest opacity-40">Enter 12-Digit UTR</p>
+        <input id="utr-input" type="number" placeholder="UTR Number" class="w-full text-center text-3xl font-bold py-4">
+        <button id="final-btn" onclick="validateAndSubmitOrder()" class="block w-full bg-stone-900 text-white py-5 font-bold text-[10px] uppercase tracking-[0.4em]">Confirm Order</button>
     </div>
-    <button onclick="closeQRModal()" class="mt-12 text-[10px] font-bold uppercase text-stone-300">Cancel</button>
+    <button onclick="closeQRModal()" class="mt-12 text-[10px] font-bold uppercase underline">Cancel</button>
 </div>
 
-<div id="history-drawer" class="fixed inset-0 bg-stone-950/20 backdrop-blur-md hidden z-[120] flex justify-end">
-    <div class="bg-white w-full max-w-md h-full p-10 shadow-2xl overflow-y-auto no-scrollbar">
-        <div class="flex justify-between items-center mb-10">
-            <h2 class="text-3xl serif italic">Order History</h2>
-            <button onclick="toggleHistory()" class="text-3xl font-light">&times;</button>
+<div id="history-drawer" class="fixed inset-0 bg-black/40 backdrop-blur-sm hidden z-[150] flex justify-end">
+    <div class="bg-white w-full max-w-md h-full p-10 overflow-y-auto no-scrollbar shadow-2xl">
+        <div class="flex justify-between items-center mb-12">
+            <h2 class="text-2xl font-bold uppercase tracking-tighter">My Orders</h2>
+            <button onclick="toggleHistory()" class="text-3xl">&times;</button>
         </div>
         <div id="history-list" class="space-y-6"></div>
     </div>
@@ -172,128 +141,116 @@
 <script>
 const FORMSPREE_ID = "xykkrvdn"; 
 const MY_GPAY_ID = "sharayuj66@oksbi";
-
 let cart = [];
 let fullUserPhone = "";
+let activeOrderId = "";
 
-// Login & Edit Phone Logic
-function editPhone() {
-    if(confirm("Would you like to change your phone number?")) {
-        localStorage.removeItem('slowGround_User');
-        location.reload();
-    }
-}
-
-async function handleLogin() {
-    const code = document.getElementById('login-area-code').value;
+function handleLogin() {
     const phone = document.getElementById('login-phone-input').value;
     if(phone.length >= 10) {
-        fullUserPhone = (code + phone).replace(/\s/g, '');
+        fullUserPhone = phone.includes("+91") ? phone.trim() : "+91" + phone.trim();
         localStorage.setItem('slowGround_User', fullUserPhone);
+        document.getElementById('user-display-id').innerText = fullUserPhone;
         document.getElementById('login-modal').classList.add('hidden');
-        document.getElementById('checkout-phone').innerText = fullUserPhone;
     }
 }
 
-// Order Logic
-async function validateAndSubmitOrder() {
-    const utr = document.getElementById('utr-input').value;
+function addToCart(name, price) { cart.push({ name, price }); document.getElementById('cart-count').innerText = cart.length; }
+function toggleCart() {
+    if (cart.length === 0 && document.getElementById('checkout-modal').classList.contains('hidden')) return alert("Cart is empty.");
+    document.getElementById('cart-items').innerHTML = cart.map(i => `<div class="flex justify-between text-xs py-2 border-b uppercase font-bold tracking-widest"><span>${i.name}</span><span>${i.price}</span></div>`).join('');
+    document.getElementById('cart-total-display').innerHTML = `<div class="flex justify-between items-center text-xl font-bold uppercase tracking-tighter"><span>Total</span><span>${cart.reduce((s,i) => s+i.price, 0)}</span></div>`;
+    document.getElementById('checkout-modal').classList.toggle('hidden');
+}
+
+// ENTRY 1: Scanning (UTR is NULL)
+async function startPaymentFlow() {
     const name = document.getElementById('cust-name').value;
     const addr = document.getElementById('cust-addr').value;
-    const btn = document.getElementById('final-btn');
-    const time = new Date().toLocaleString();
-
-    if(utr.length < 8) return alert("Please enter valid Transaction ID");
-    btn.innerText = "SUBMITTING...";
-    btn.disabled = true;
+    const total = cart.reduce((s, i) => s + i.price, 0);
+    const items = cart.map(i => i.name).join(", ");
+    activeOrderId = 'SG-' + Math.floor(1000 + Math.random() * 9000);
+    
+    document.getElementById('display-order-id').innerText = activeOrderId;
+    document.getElementById('proceed-btn').innerText = "WAITING...";
 
     try {
         await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ 
-                Status: "PURCHASE", Name: name, Phone: fullUserPhone, 
-                Address: addr, UTR_Confirmed: utr, Time: time, 
-                Amount: "₹"+cart.reduce((s,i)=>s+i.price,0) 
+                OrderID: activeOrderId,
+                Status: "SCANNING",
+                Name: name,
+                Phone: fullUserPhone,
+                Address: addr,
+                Total: total,
+                Items: items,
+                UTR: "" // Leave empty for first row
             })
         });
-        saveOrderLocal("Processing", utr, time);
-        alert("Order Received!");
-        location.reload();
-    } catch (e) {
-        saveOrderLocal("Processing", utr, time);
-        location.reload();
-    }
-}
+    } catch (e) {}
 
-// UI Triggers
-function addToCart(name, price) {
-    cart.push({ name, price });
-    document.getElementById('cart-count').innerText = cart.length;
-}
-
-function toggleCart() {
-    if (cart.length === 0 && document.getElementById('checkout-modal').classList.contains('hidden')) return alert("Cart is empty");
-    const list = document.getElementById('cart-items');
-    list.innerHTML = cart.map(i => `<div class="flex justify-between font-bold"><span>${i.name}</span><span>₹${i.price}</span></div>`).join('');
-    document.getElementById('cart-total-display').innerHTML = `<div class="flex justify-between text-2xl font-bold"><span>Total</span><span>₹${cart.reduce((s,i) => s+i.price, 0)}</span></div>`;
-    document.getElementById('checkout-phone').innerText = fullUserPhone;
-    document.getElementById('checkout-modal').classList.toggle('hidden');
-}
-
-function showPaymentQR() {
-    const total = cart.reduce((s, i) => s + i.price, 0);
     const upi = `upi://pay?pa=${MY_GPAY_ID}&pn=SlowGround&am=${total}&cu=INR`;
-    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(upi)}`;
-    document.getElementById('qr-display').innerHTML = `<img src="${qrUrl}" class="w-48 mx-auto">`;
+    document.getElementById('qr-display').innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(upi)}">`;
     document.getElementById('qr-modal').classList.remove('hidden');
+    document.getElementById('proceed-btn').innerText = "Proceed to Pay";
 }
 
-function showTransactionInput() {
-    document.getElementById('qr-step-1').classList.add('hidden');
-    document.getElementById('qr-step-2').classList.remove('hidden');
+function showTransactionInput() { document.getElementById('qr-step-1').classList.add('hidden'); document.getElementById('qr-step-2').classList.remove('hidden'); }
+
+// ENTRY 2: Transaction (UTR is PRESENT)
+async function validateAndSubmitOrder() {
+    const utr = document.getElementById('utr-input').value;
+    const name = document.getElementById('cust-name').value;
+    const addr = document.getElementById('cust-addr').value;
+    const total = cart.reduce((s, i) => s + i.price, 0);
+    const items = cart.map(i => i.name).join(", ");
+
+    if(utr.length < 8) return alert("Invalid UTR.");
+    document.getElementById('final-btn').innerText = "VERIFYING...";
+
+    try {
+        await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                OrderID: activeOrderId,
+                Status: "PAID",
+                Name: name,
+                Phone: fullUserPhone,
+                Address: addr,
+                Total: total,
+                Items: items,
+                UTR: utr // UPI ID present here
+            })
+        });
+        saveOrderLocal(items, utr, new Date().toLocaleString(), activeOrderId);
+        window.open(`https://wa.me/919892259949?text=Order%20${activeOrderId}%20Confirmed`, '_blank');
+        location.reload();
+    } catch (e) { location.reload(); }
 }
 
 function closeQRModal() { document.getElementById('qr-modal').classList.add('hidden'); }
-
-// Local History
-function saveOrderLocal(status, utr, time) {
-    const total = cart.reduce((s, i) => s + i.price, 0);
-    const order = { id: 'SG'+Date.now().toString().slice(-4), total: "₹"+total, status, utr, time, tracking: null };
+function saveOrderLocal(items, utr, time, id) {
     let history = JSON.parse(localStorage.getItem('orders_'+fullUserPhone)) || [];
-    history.push(order);
+    history.push({ id, total: cart.reduce((s, i) => s + i.price, 0), items, utr, time });
     localStorage.setItem('orders_'+fullUserPhone, JSON.stringify(history));
 }
-
 function toggleHistory() {
-    const list = document.getElementById('history-list');
     const orders = JSON.parse(localStorage.getItem('orders_'+fullUserPhone)) || [];
-    list.innerHTML = orders.slice().reverse().map(o => `
-        <div class="p-8 border border-stone-100 bg-stone-50 rounded-3xl space-y-4 mb-4">
-            <div class="flex justify-between text-[10px] font-bold text-stone-400 uppercase tracking-widest">
-                <span>Ref: ${o.id}</span>
-                <span>${o.time}</span>
-            </div>
-            <p class="text-3xl font-bold text-stone-900">${o.total}</p>
-            <div class="space-y-1 py-3 border-y border-stone-200/50">
-                <p class="text-[10px] text-stone-500 font-bold uppercase tracking-widest">UTR: <span class="text-stone-900 ml-1">${o.utr}</span></p>
-                <p class="text-[10px] text-stone-500 font-bold uppercase tracking-widest">Tracking: <span class="text-orange-600 ml-1">${o.tracking || 'Awaiting Shipment'}</span></p>
-            </div>
-            <div class="flex justify-between items-center">
-                <span class="text-[10px] font-black text-orange-600 uppercase tracking-widest">${o.status}</span>
-                <a href="tel:+919892259949" class="text-[10px] font-bold underline">Help</a>
-            </div>
-        </div>`).join('') || '<p class="text-stone-300 italic text-center py-20">No orders found.</p>';
+    document.getElementById('history-list').innerHTML = orders.slice().reverse().map(o => `
+        <div class="p-6 border border-stone-200 bg-white space-y-4 text-xs font-bold uppercase tracking-widest">
+            <div class="flex justify-between opacity-40"><span>Ref: ${o.id}</span><span>${o.time}</span></div>
+            <p>${o.items}</p>
+            <div class="flex justify-between border-t pt-4"><span>UTR: ${o.utr}</span><span class="text-[#b04a33]">₹${o.total}</span></div>
+        </div>
+    `).join('') || '<p class="text-center opacity-30 py-20 font-bold uppercase tracking-widest">No orders</p>';
     document.getElementById('history-drawer').classList.toggle('hidden');
 }
-
 window.onload = () => {
     const saved = localStorage.getItem('slowGround_User');
-    if(saved) { 
-        fullUserPhone = saved; 
-        document.getElementById('login-modal').classList.add('hidden'); 
-        document.getElementById('checkout-phone').innerText = saved;
-    }
+    if(saved) { fullUserPhone = saved; document.getElementById('user-display-id').innerText = fullUserPhone; document.getElementById('login-modal').classList.add('hidden'); }
 };
 </script>
 </body>
