@@ -8,133 +8,94 @@
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
     <style>
         :root { --laterite: #b04a33; --basalt: #1c1c1c; --clay: #f4f1ee; }
-        body { font-family: 'Space Grotesk', sans-serif; background-color: var(--clay); color: var(--basalt); }
+        body { font-family: 'Space Grotesk', sans-serif; background-color: var(--clay); color: var(--basalt); overflow-x: hidden; }
         .serif { font-family: 'Playfair Display', serif; }
-        .glass { background: rgba(244, 241, 238, 0.98); backdrop-filter: blur(20px); }
+        .glass { background: rgba(244, 241, 238, 0.96); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); }
         .no-scrollbar::-webkit-scrollbar { display: none; }
-        .product-card { border: 1px solid transparent; transition: all 0.4s ease; }
-        .product-card:hover { border-color: var(--basalt); background: white; }
         input, textarea { border-radius: 0 !important; border-bottom: 1px solid #000 !important; border-top: none !important; border-left: none !important; border-right: none !important; background: transparent !important; }
         input:focus { border-color: var(--laterite) !important; outline: none; }
+        /* Smooth transitions for mobile taps */
+        .tap-target { transition: opacity 0.2s ease; }
+        .tap-target:active { opacity: 0.6; }
     </style>
 </head>
 <body class="antialiased">
 
-<div id="login-modal" class="fixed inset-0 bg-[#f4f1ee] z-[200] flex flex-col items-center justify-center p-6">
-    <div class="max-w-xs w-full space-y-12 text-center">
-        <h2 class="text-5xl serif italic tracking-tighter">Slow-Ground</h2>
+<div id="login-modal" class="fixed inset-0 bg-[#f4f1ee] z-[200] flex flex-col items-center justify-center p-6 text-center">
+    <div class="max-w-xs w-full space-y-10">
+        <h2 class="text-4xl md:text-5xl serif italic tracking-tighter">Slow-Ground</h2>
         <div class="space-y-6">
-            <input id="login-phone-input" type="tel" placeholder="Enter Mobile Number" class="w-full font-bold text-center text-lg pb-4">
+            <input id="login-phone-input" type="tel" placeholder="Mobile Number" class="w-full font-bold text-center text-lg pb-4">
             <button onclick="handleLogin()" class="w-full bg-stone-900 text-white py-5 font-bold text-[10px] uppercase tracking-[0.4em]">Login</button>
         </div>
     </div>
 </div>
 
-<nav class="glass sticky top-0 z-50 border-b border-stone-200 px-8 py-6">
+<nav class="glass sticky top-0 z-50 border-b border-stone-200 px-4 md:px-8 py-4 md:py-6">
     <div class="max-w-7xl mx-auto flex justify-between items-center">
-        <div class="cursor-pointer" onclick="location.reload()"><h1 class="text-xl font-bold tracking-tighter uppercase">Slow-Ground</h1></div>
-        <div class="flex items-center gap-12">
-            <button onclick="toggleHistory()" class="text-[10px] font-bold tracking-widest uppercase border-b border-stone-900 pb-1">My Orders</button>
-            <div class="flex flex-col items-end border-l border-stone-300 pl-8">
-                <span class="text-[8px] font-bold text-stone-400 uppercase tracking-widest leading-none">Logged In</span>
-                <span id="user-display-id" class="text-[10px] font-bold text-stone-900 tracking-widest">+91 0000000000</span>
+        <div class="cursor-pointer" onclick="location.reload()">
+            <h1 class="text-base md:text-xl font-bold tracking-tighter uppercase leading-none">Slow-<br class="md:hidden">Ground</h1>
+        </div>
+        <div class="flex items-center gap-3 md:gap-12">
+            <button onclick="toggleHistory()" class="text-[9px] md:text-[10px] font-bold tracking-widest uppercase border-b border-stone-900 pb-1 tap-target">Orders</button>
+            <div class="flex flex-col items-end border-l border-stone-300 pl-3 md:pl-8">
+                <span class="text-[7px] md:text-[8px] font-bold text-stone-400 uppercase tracking-widest leading-none">Logged In</span>
+                <span id="user-display-id" class="text-[9px] md:text-[10px] font-bold text-stone-900 tracking-widest">+91 0000...</span>
             </div>
-            <button onclick="toggleCart()" class="text-[10px] font-bold tracking-widest uppercase bg-stone-900 text-white px-4 py-2">Cart (<span id="cart-count">0</span>)</button>
+            <button onclick="toggleCart()" class="text-[9px] md:text-[10px] font-bold tracking-widest uppercase bg-stone-900 text-white px-3 md:px-4 py-2 tap-target">Cart (<span id="cart-count">0</span>)</button>
         </div>
     </div>
 </nav>
 
-<main class="max-w-7xl mx-auto px-8 py-24">
-    <header class="mb-32">
-        <h2 class="text-7xl md:text-8xl serif italic leading-[0.9] tracking-tighter">Pounded <span class="text-[#b04a33]">Slow.</span><br>Earthy Soul.</h2>
+<main class="max-w-7xl mx-auto px-6 md:px-8 py-12 md:py-24">
+    <header class="mb-16 md:mb-32">
+        <h2 class="text-5xl md:text-8xl serif italic leading-[1.1] md:leading-[0.9] tracking-tighter">
+            Pounded <span class="text-[#b04a33]">Slow.</span><br>Earthy Soul.
+        </h2>
     </header>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-16">
-        <div class="product-card p-6 group cursor-pointer" onclick="addToCart('Everyday Magic', 1050)">
-            <div class="aspect-[4/5] bg-stone-200 mb-8 overflow-hidden">
-                <img src="everyday-magic.jpg" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16">
+        <div class="group cursor-pointer" onclick="addToCart('Everyday Magic', 1050)">
+            <div class="aspect-[4/5] bg-stone-200 mb-6 md:mb-8 overflow-hidden">
+                <img src="everyday-magic.jpg" alt="Spice Pack" class="w-full h-full object-cover grayscale md:group-hover:grayscale-0 transition-all duration-700">
             </div>
-            <div class="flex justify-between items-baseline mb-4">
-                <h3 class="text-3xl font-bold uppercase tracking-tighter">Everyday Magic</h3>
-                <span class="text-2xl">1050</span>
+            <div class="flex justify-between items-baseline mb-2">
+                <h3 class="text-2xl md:text-3xl font-bold uppercase tracking-tighter">Everyday Magic</h3>
+                <span class="text-xl md:text-2xl">1050</span>
             </div>
-            <p class="text-[10px] font-bold uppercase tracking-widest text-[#b04a33] mb-8">Teja Chilli • 750g</p>
-            <button class="w-full py-5 border border-stone-900 text-[10px] font-bold uppercase tracking-[0.4em]">Add to Cart</button>
+            <p class="text-[9px] md:text-[10px] font-bold uppercase tracking-widest text-[#b04a33] mb-6">Teja Chilli • 750g</p>
+            <button class="w-full py-4 border border-stone-900 text-[10px] font-bold uppercase tracking-[0.4em] tap-target">Add to Cart</button>
         </div>
 
-        <div class="product-card p-6 group cursor-pointer" onclick="addToCart('Garam Masala', 950)">
-            <div class="aspect-[4/5] bg-stone-200 mb-8 overflow-hidden">
-                <img src="garam-masala.jpg" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
+        <div class="group cursor-pointer" onclick="addToCart('Garam Masala', 950)">
+            <div class="aspect-[4/5] bg-stone-200 mb-6 md:mb-8 overflow-hidden">
+                <img src="garam-masala.jpg" alt="Spice Blend" class="w-full h-full object-cover grayscale md:group-hover:grayscale-0 transition-all duration-700">
             </div>
-            <div class="flex justify-between items-baseline mb-4">
-                <h3 class="text-3xl font-bold uppercase tracking-tighter">Garam Masala</h3>
-                <span class="text-2xl">950</span>
+            <div class="flex justify-between items-baseline mb-2">
+                <h3 class="text-2xl md:text-3xl font-bold uppercase tracking-tighter">Garam Masala</h3>
+                <span class="text-xl md:text-2xl">950</span>
             </div>
-            <p class="text-[10px] font-bold uppercase tracking-widest text-[#b04a33] mb-8">Heirloom Blend • 750g</p>
-            <button class="w-full py-5 border border-stone-900 text-[10px] font-bold uppercase tracking-[0.4em]">Add to Cart</button>
+            <p class="text-[9px] md:text-[10px] font-bold uppercase tracking-widest text-[#b04a33] mb-6">Heirloom Blend • 750g</p>
+            <button class="w-full py-4 border border-stone-900 text-[10px] font-bold uppercase tracking-[0.4em] tap-target">Add to Cart</button>
         </div>
     </div>
 </main>
 
-<footer class="bg-[#1c1c1c] text-white pt-24 pb-12 px-8 mt-20">
-    <div class="max-w-7xl mx-auto">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-16 mb-24">
-            <div class="space-y-8">
-                <h3 class="text-3xl serif italic tracking-tighter">Slow-Ground</h3>
-                <p class="text-stone-400 text-sm max-w-sm">Stone-pounded purity from our home to yours.</p>
-            </div>
-            <div class="flex flex-col md:items-end justify-center space-y-6 text-right">
-                <h4 class="text-[10px] font-bold uppercase tracking-[0.3em] text-[#b04a33]">Direct Line</h4>
-                <a href="tel:+919892259949" class="text-xl serif italic block">+91 9892259949</a>
-                <p class="text-stone-500 text-[10px] font-bold uppercase">Founder: Aai • Mumbai</p>
-            </div>
-        </div>
-        <div class="pt-12 border-t border-stone-800 flex justify-between">
-            <p class="text-[9px] font-bold text-stone-600 uppercase tracking-[0.4em]">© 2026 Slow-Ground</p>
-            <p class="text-[9px] font-bold text-stone-600 uppercase tracking-[0.4em]">Purity Guaranteed</p>
-        </div>
-    </div>
-</footer>
-
 <div id="checkout-modal" class="fixed inset-0 bg-black/40 backdrop-blur-sm hidden z-[140] flex justify-end">
-    <div class="bg-white w-full max-w-md h-full p-10 flex flex-col shadow-2xl">
+    <div class="bg-white w-full md:max-w-md h-full p-8 md:p-10 flex flex-col shadow-2xl">
         <div class="flex justify-between items-center mb-8">
-            <h2 class="text-3xl font-bold uppercase tracking-tighter">Cart</h2>
-            <button onclick="toggleCart()" class="text-3xl">&times;</button>
+            <h2 class="text-2xl font-bold uppercase tracking-tighter">Cart</h2>
+            <button onclick="toggleCart()" class="text-3xl leading-none">&times;</button>
         </div>
         <div id="cart-items" class="flex-1 space-y-4 overflow-y-auto no-scrollbar"></div>
-        <div class="border-t pt-8 mt-8 space-y-6">
+        <div class="border-t pt-8 mt-4 space-y-6">
             <div id="cart-total-display"></div>
             <form onsubmit="event.preventDefault(); startPaymentFlow();" class="space-y-4">
-                <input required id="cust-name" placeholder="FULL NAME" class="w-full py-3 text-xs font-bold uppercase tracking-widest">
-                <textarea required id="cust-addr" placeholder="SHIPPING ADDRESS" class="w-full py-3 text-xs uppercase tracking-widest h-24"></textarea>
+                <input required id="cust-name" placeholder="FULL NAME" class="w-full py-3 text-[10px] font-bold uppercase tracking-widest">
+                <textarea required id="cust-addr" placeholder="SHIPPING ADDRESS" class="w-full py-3 text-[10px] uppercase tracking-widest h-20"></textarea>
                 <button type="submit" id="proceed-btn" class="w-full bg-stone-900 text-white py-5 font-bold uppercase tracking-[0.4em] text-[10px]">Proceed to Pay</button>
             </form>
         </div>
-    </div>
-</div>
-
-<div id="qr-modal" class="fixed inset-0 bg-white z-[300] hidden flex flex-col items-center justify-center p-8 text-center">
-    <div id="qr-step-1" class="space-y-8">
-        <div class="px-4 py-2 bg-stone-100 inline-block text-[10px] font-bold tracking-widest uppercase tracking-tighter">Order: <span id="display-order-id"></span></div>
-        <div id="qr-display" class="p-4 border border-stone-100 inline-block"></div>
-        <button onclick="showTransactionInput()" class="block w-full bg-stone-900 text-white py-5 px-12 font-bold text-[10px] uppercase tracking-[0.4em]">Transfer Complete</button>
-    </div>
-    <div id="qr-step-2" class="hidden space-y-8 w-full max-w-xs">
-        <p class="text-[10px] font-bold uppercase tracking-widest opacity-40">Enter 12-Digit UTR</p>
-        <input id="utr-input" type="number" placeholder="UTR Number" class="w-full text-center text-3xl font-bold py-4">
-        <button id="final-btn" onclick="validateAndSubmitOrder()" class="block w-full bg-stone-900 text-white py-5 font-bold text-[10px] uppercase tracking-[0.4em]">Confirm Order</button>
-    </div>
-    <button onclick="closeQRModal()" class="mt-12 text-[10px] font-bold uppercase underline">Cancel</button>
-</div>
-
-<div id="history-drawer" class="fixed inset-0 bg-black/40 backdrop-blur-sm hidden z-[150] flex justify-end">
-    <div class="bg-white w-full max-w-md h-full p-10 overflow-y-auto no-scrollbar shadow-2xl">
-        <div class="flex justify-between items-center mb-12">
-            <h2 class="text-2xl font-bold uppercase tracking-tighter">My Orders</h2>
-            <button onclick="toggleHistory()" class="text-3xl">&times;</button>
-        </div>
-        <div id="history-list" class="space-y-6"></div>
     </div>
 </div>
 
@@ -143,115 +104,38 @@ const FORMSPREE_ID = "xykkrvdn";
 const MY_GPAY_ID = "sharayuj66@oksbi";
 let cart = [];
 let fullUserPhone = "";
-let activeOrderId = "";
 
 function handleLogin() {
     const phone = document.getElementById('login-phone-input').value;
     if(phone.length >= 10) {
         fullUserPhone = phone.includes("+91") ? phone.trim() : "+91" + phone.trim();
         localStorage.setItem('slowGround_User', fullUserPhone);
-        document.getElementById('user-display-id').innerText = fullUserPhone;
+        document.getElementById('user-display-id').innerText = fullUserPhone.slice(0, 7) + "...";
         document.getElementById('login-modal').classList.add('hidden');
     }
 }
 
-function addToCart(name, price) { cart.push({ name, price }); document.getElementById('cart-count').innerText = cart.length; }
+function addToCart(name, price) {
+    cart.push({ name, price });
+    document.getElementById('cart-count').innerText = cart.length;
+}
+
 function toggleCart() {
     if (cart.length === 0 && document.getElementById('checkout-modal').classList.contains('hidden')) return alert("Cart is empty.");
-    document.getElementById('cart-items').innerHTML = cart.map(i => `<div class="flex justify-between text-xs py-2 border-b uppercase font-bold tracking-widest"><span>${i.name}</span><span>${i.price}</span></div>`).join('');
-    document.getElementById('cart-total-display').innerHTML = `<div class="flex justify-between items-center text-xl font-bold uppercase tracking-tighter"><span>Total</span><span>${cart.reduce((s,i) => s+i.price, 0)}</span></div>`;
+    document.getElementById('cart-items').innerHTML = cart.map(i => `<div class="flex justify-between text-[10px] py-3 border-b uppercase font-bold tracking-widest"><span>${i.name}</span><span>₹${i.price}</span></div>`).join('');
+    document.getElementById('cart-total-display').innerHTML = `<div class="flex justify-between items-center text-lg font-bold uppercase tracking-tighter"><span>Total</span><span>₹${cart.reduce((s,i) => s+i.price, 0)}</span></div>`;
     document.getElementById('checkout-modal').classList.toggle('hidden');
 }
 
-// ENTRY 1: Scanning (UTR is NULL)
-async function startPaymentFlow() {
-    const name = document.getElementById('cust-name').value;
-    const addr = document.getElementById('cust-addr').value;
-    const total = cart.reduce((s, i) => s + i.price, 0);
-    const items = cart.map(i => i.name).join(", ");
-    activeOrderId = 'SG-' + Math.floor(1000 + Math.random() * 9000);
-    
-    document.getElementById('display-order-id').innerText = activeOrderId;
-    document.getElementById('proceed-btn').innerText = "WAITING...";
-
-    try {
-        await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-                OrderID: activeOrderId,
-                Status: "SCANNING",
-                Name: name,
-                Phone: fullUserPhone,
-                Address: addr,
-                Total: total,
-                Items: items,
-                UTR: "" // Leave empty for first row
-            })
-        });
-    } catch (e) {}
-
-    const upi = `upi://pay?pa=${MY_GPAY_ID}&pn=SlowGround&am=${total}&cu=INR`;
-    document.getElementById('qr-display').innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(upi)}">`;
-    document.getElementById('qr-modal').classList.remove('hidden');
-    document.getElementById('proceed-btn').innerText = "Proceed to Pay";
-}
-
-function showTransactionInput() { document.getElementById('qr-step-1').classList.add('hidden'); document.getElementById('qr-step-2').classList.remove('hidden'); }
-
-// ENTRY 2: Transaction (UTR is PRESENT)
-async function validateAndSubmitOrder() {
-    const utr = document.getElementById('utr-input').value;
-    const name = document.getElementById('cust-name').value;
-    const addr = document.getElementById('cust-addr').value;
-    const total = cart.reduce((s, i) => s + i.price, 0);
-    const items = cart.map(i => i.name).join(", ");
-
-    if(utr.length < 8) return alert("Invalid UTR.");
-    document.getElementById('final-btn').innerText = "VERIFYING...";
-
-    try {
-        await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-                OrderID: activeOrderId,
-                Status: "PAID",
-                Name: name,
-                Phone: fullUserPhone,
-                Address: addr,
-                Total: total,
-                Items: items,
-                UTR: utr // UPI ID present here
-            })
-        });
-        saveOrderLocal(items, utr, new Date().toLocaleString(), activeOrderId);
-        window.open(`https://wa.me/919892259949?text=Order%20${activeOrderId}%20Confirmed`, '_blank');
-        location.reload();
-    } catch (e) { location.reload(); }
-}
-
-function closeQRModal() { document.getElementById('qr-modal').classList.add('hidden'); }
-function saveOrderLocal(items, utr, time, id) {
-    let history = JSON.parse(localStorage.getItem('orders_'+fullUserPhone)) || [];
-    history.push({ id, total: cart.reduce((s, i) => s + i.price, 0), items, utr, time });
-    localStorage.setItem('orders_'+fullUserPhone, JSON.stringify(history));
-}
-function toggleHistory() {
-    const orders = JSON.parse(localStorage.getItem('orders_'+fullUserPhone)) || [];
-    document.getElementById('history-list').innerHTML = orders.slice().reverse().map(o => `
-        <div class="p-6 border border-stone-200 bg-white space-y-4 text-xs font-bold uppercase tracking-widest">
-            <div class="flex justify-between opacity-40"><span>Ref: ${o.id}</span><span>${o.time}</span></div>
-            <p>${o.items}</p>
-            <div class="flex justify-between border-t pt-4"><span>UTR: ${o.utr}</span><span class="text-[#b04a33]">₹${o.total}</span></div>
-        </div>
-    `).join('') || '<p class="text-center opacity-30 py-20 font-bold uppercase tracking-widest">No orders</p>';
-    document.getElementById('history-drawer').classList.toggle('hidden');
-}
 window.onload = () => {
     const saved = localStorage.getItem('slowGround_User');
-    if(saved) { fullUserPhone = saved; document.getElementById('user-display-id').innerText = fullUserPhone; document.getElementById('login-modal').classList.add('hidden'); }
+    if(saved) {
+        fullUserPhone = saved;
+        document.getElementById('user-display-id').innerText = fullUserPhone.slice(0, 7) + "...";
+        document.getElementById('login-modal').classList.add('hidden');
+    }
 };
 </script>
+
 </body>
 </html>
